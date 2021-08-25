@@ -78,7 +78,7 @@ Task("Clean")
 });
 
 Task("GetVersionInfo")
-    .WithCriteria(target != "Jenkins" && target != "JenkinsBuild")
+    .WithCriteria(target != "JenkinsBuild")
     .Does(() =>
     {
         var versioninfo = GitVersion(new GitVersionSettings {
@@ -99,7 +99,7 @@ Task("GetVersionInfo")
     });
 
 Task("GetJenkinsInfo")
-    .WithCriteria(target == "Jenkins" || target == "JenkinsBuild")
+    .WithCriteria( target == "JenkinsBuild")
     .Does(() =>
     {
         buildTag = buildVersion;
