@@ -2,13 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-		powershell "& .\\build.ps1 -t JenkinsBuild"
-                echo 'Build finished'
-            }
-        }
+        stage ('Clean workspace') {
+  		steps {
+    		cleanWs()
+  		}
+	}
+	stage ('Git Checkout') {
+  steps {
+      git branch: 'master', url: 'https://github.com/Sanjeevk13/CIPipeline.git'
+    }
+  }
+  stage('Restore packages') {
+  steps {
+    bat "dotnet restore ${workspace}
+    ./DemoApp.sln"
+  }
+}
+  
+  
     }
         
         
