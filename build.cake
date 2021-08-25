@@ -22,12 +22,12 @@ var artifacts ="./.artifacts";
 var artifactsdir = Directory (artifacts);
 
 // Define config variables
-var appName ="gorewardsweb-test";
-var projectName = "GoRewards Web-Test";
-var projectPath = "BCS.GetGo.Booking.AppWeb";
-var solutionFile = "./BCS.GetGo.Booking.sln";
-var registryUsername = EnvironmentVariable("REG_USER") ?? "GoRewardsACS";
-var registryPassword = EnvironmentVariable("REG_PASSWORD") ?? "AFZB=jKoJijGCKHI3k9KlLhZwpvBJwtF";
+var appName ="DemoApp";
+//var projectName = "GoRewards Web-Test";
+//var projectPath = "BCS.GetGo.Booking.AppWeb";
+var solutionFile = "DemoApp/DemoApp.sln";
+//var registryUsername = EnvironmentVariable("REG_USER") ?? "GoRewardsACS";
+//var registryPassword = EnvironmentVariable("REG_PASSWORD") ?? "AFZB=jKoJijGCKHI3k9KlLhZwpvBJwtF";
 var buildVersion = EnvironmentVariable("BUILD_BUILDID") ??  EnvironmentVariable("BUILD_NUMBER") ?? buildNumber;
 //var octoApiKey = EnvironmentVariable("OCTOPUS_API_KEY") ?? "API-JMONTCBFJP5GY8ETET85WSVOXZC";
 //var octoAddress = EnvironmentVariable("OCTOPUS_URL") ?? "https://davideploy.apps.bcstechnology.com.au/";
@@ -140,11 +140,6 @@ Task("Build")
         }
     });
 
-Task("Jenkins")
-    .IsDependentOn("DeployPackage")
-    .Does(() => {
-        Information("Done Building...");
-    });
 
 Task("JenkinsBuild")
     .IsDependentOn("Build")
@@ -157,7 +152,7 @@ Task("JenkinsBuild")
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("DeployToTest");
+    .IsDependentOn("JenkinsBuild");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
