@@ -1,6 +1,5 @@
 pipeline {
-    agent {label 'dockerci'}
-
+    agent any
     stages {
         stage('Build') {
             steps {
