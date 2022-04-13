@@ -1,21 +1,35 @@
-pipeline {
+ pipeline {
     agent any
+	
+	environment {
+        dockerImage = ''
+        registry = 'sanjeevk13/firdockerimage'
+        registryCredential = 'dockerhub_id'
+    } 
     stages {
-        stage('Build') {
+        stage('Cloning Git') {
             steps {
-                echo 'Building..'
-		powershell "& .\\build.ps1 --target JenkinsBuild"
-                echo 'Build finished'
+                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Sanjeevk13/DockerBuild1.git']]])      
+                }
             }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+        
+        // Building Docker images
+        stage('Build Docker image') {
+            steps{
+                 script {
+                   dockerImage = docker.build registry
+                }           
             }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+        } 
+        // Uploading Docker images into Docker Hub
+        stage('Upload Image') {
+            steps{    
+                script {
+                      docker.withRegistry( '', registryCredential ) {
+                      dockerImage.push()
+                    }
+                    
+                }
             }
         }
 }
@@ -32,3 +46,4 @@ pipeline {
         }
     }
 }
+
